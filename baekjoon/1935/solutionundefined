@@ -1,0 +1,48 @@
+// [문제 링크]: https://www.acmicpc.net/problem/1935
+
+#include <bits/stdc++.h>
+#define fastio cin.tie(0)->sync_with_stdio(0)
+using namespace std;
+​
+​
+int main()
+{
+    fastio;
+    int n; cin >> n;
+    int arr[26];
+    string s; cin >> s;
+    int i = 0;
+    stack<double> stk;
+​
+    while (n--){
+        int t; cin >> t;
+        arr[i++] = t;
+    }
+​
+    for (int i = 0; i < s.size(); i++){
+        if (isalpha(s[i])) stk.push(arr[s[i] - 'A']);
+        else{
+            double b = stk.top();
+            stk.pop();
+            double a = stk.top();
+            stk.pop();
+​
+            if (s[i] == '+'){
+                stk.push(a + b);
+            }
+            else if (s[i] == '-'){
+                stk.push(a - b);
+            }
+            else if (s[i] == '*'){
+                stk.push(a * b);
+            }
+            else if (s[i] == '/'){
+                stk.push(a / b);
+            }
+        }
+    }
+    
+    cout << fixed << setprecision(2);
+    cout << stk.top() << '\n';
+    
+}
