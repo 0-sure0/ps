@@ -1,0 +1,51 @@
+// [문제 링크]: https://www.acmicpc.net/problem/1918
+
+#include <bits/stdc++.h>
+#define fastio cin.tie(0)->sync_with_stdio(0)
+using namespace std;
+​
+​
+int main()
+{
+    fastio;
+    string s; cin >> s;
+    stack<char> stk;
+    stringstream out;
+​
+    for (int i=0; i < s.size(); i++){
+        if (isalpha(s[i])) out << s[i];
+        else{
+                if (s[i] == '+' || s[i] == '-'){
+                    while (stk.size() && (stk.top() != '(')){
+                        out << stk.top();
+                        stk.pop();
+                    }
+                    stk.push(s[i]);
+                }
+                
+                else if (s[i] == ')'){
+                    while (stk.size() && stk.top() != '('){
+                        out << stk.top();
+                        stk.pop();
+                    }
+                    stk.pop();
+                }
+                else if (s[i] == '*' || s[i] == '/'){
+                    while (stk.size() && (stk.top() == '*' || stk.top() == '/')){
+                        out << stk.top();
+                        stk.pop();
+                    }
+                    stk.push(s[i]);
+                }
+                else if (s[i] == '(')
+                    stk.push(s[i]);
+            } 
+    }
+​
+    while (stk.size()){
+        out << stk.top();
+        stk.pop(); 
+    } 
+    cout << out.str() << '\n';
+​
+}
