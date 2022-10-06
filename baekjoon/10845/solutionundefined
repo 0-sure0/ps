@@ -1,0 +1,35 @@
+// [문제 링크]: https://www.acmicpc.net/problem/10845
+
+#include <bits/stdc++.h>
+#define fastio cin.tie(0)->sync_with_stdio(0)
+using namespace std;
+​
+​
+int main()
+{
+    fastio;
+    int n; cin >> n;
+    queue<int> q;
+​
+    while (n--){
+        string order; cin >> order;
+​
+        if (order == "push") {
+            int x; cin >> x;
+            q.push(x);
+        }
+​
+        else if (order == "pop"){
+            if (q.size()){
+                cout << q.front() << '\n';
+                q.pop();
+            }
+            else cout << -1 << '\n';
+        }
+​
+        else if (order == "size") cout << q.size() << '\n';
+        else if (order == "empty") cout << (q.empty() ? 1 : 0) << '\n';
+        else if (order == "front") cout << (q.size() ? q.front() : -1) << '\n';
+        else if (order == "back") cout << (q.size() ? q.back() : -1) << '\n';
+    }
+}
