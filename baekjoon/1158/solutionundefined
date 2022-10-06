@@ -1,0 +1,30 @@
+// [문제 링크]: https://www.acmicpc.net/problem/1158
+
+#include <bits/stdc++.h>
+#define fastio cin.tie(0)->sync_with_stdio(0)
+using namespace std;
+​
+​
+int main()
+{
+    fastio;
+    int n, k; cin >> n >> k;
+​
+    queue<int> q;
+    stringstream out;
+    out << '<';
+    for (int i=1; i <= n; i++){
+        q.push(i);
+    }
+​
+    while (q.size() != 1){
+        for (int i=1; i<k; i++){
+            q.push(q.front());
+            q.pop();
+        }
+        out << to_string(q.front()) + ", ";
+        q.pop(); 
+    }
+    out << to_string(q.front()) + '>';
+    cout << out.str() << '\n';
+}
