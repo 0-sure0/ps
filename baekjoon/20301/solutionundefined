@@ -1,0 +1,45 @@
+// [문제 링크]: https://www.acmicpc.net/problem/20301
+
+#include <bits/stdc++.h>
+#define fastio cin.tie(0)->sync_with_stdio(0)
+using namespace std;
+​
+​
+int main()
+{
+    fastio;
+​
+    int n, k, m; cin >> n >> k >> m;
+    stringstream out;
+    deque<int> dq;
+    for (int i=1; i<=n; i++) dq.push_back(i);
+​
+    int turn = 0;
+    int t = 0;
+    while (dq.size() != 1){
+        if (!turn){
+            for (int j=1; j < k; j++){
+                dq.push_back(dq.front());
+                dq.pop_front();
+            }
+​
+            out << to_string(dq.front()) + '\n';
+            dq.pop_front();
+        }
+​
+        else{
+            for (int j=1; j < k; j++) {
+                dq.push_front(dq.back());
+                dq.pop_back();
+            }
+            out << to_string(dq.back()) + '\n';
+            dq.pop_back();
+        }
+​
+        t++;
+        if (t == m) turn = !turn, t=0;
+    }
+    out << to_string(dq.back()) + '\n';
+    cout << out.str();
+​
+}
