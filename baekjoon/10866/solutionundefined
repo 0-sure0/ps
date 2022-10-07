@@ -1,0 +1,27 @@
+// [문제 링크]: https://www.acmicpc.net/problem/10866
+
+#include <bits/stdc++.h>
+#define fastio cin.tie(0)->sync_with_stdio(0)
+using namespace std;
+​
+​
+int main()
+{
+    fastio;
+    int n; cin >> n;
+    deque<int> dq;
+​
+    while (n--){
+        string s; cin >> s;
+​
+        if (s == "push_back") {int x; cin >> x; dq.push_back(x);}
+        else if (s == "push_front") {int x; cin >> x; dq.push_front(x);}
+        else if (s == "pop_front") {cout << (dq.size() ? dq.front() : -1) << '\n'; dq.size()? dq.pop_front() : void();}
+        else if (s == "pop_back") {cout << (dq.size() ? dq.back() : -1) << '\n'; dq.size() ? dq.pop_back() : void();} 
+        else if (s == "size") cout << dq.size() << '\n';
+        else if (s == "empty") cout << dq.empty() << '\n';
+        else if (s == "front") cout << (dq.size() ? dq.front() : -1) << '\n';
+        else if (s == "back") cout << (dq.size() ? dq.back() : -1) << '\n';
+    }
+​
+}
