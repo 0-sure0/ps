@@ -10,7 +10,7 @@ def solution():
     def dfs(node):
         checked[node] = 1
 ​
-        if node in tree and not tree[node]:
+        if not tree[node]:
             del tree[node]
             return
 ​
