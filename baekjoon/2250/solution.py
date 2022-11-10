@@ -6,15 +6,6 @@ input = sys.stdin.readline
 from collections import defaultdict
 ​
 def solution():
-    def find_root():
-        nonlocal root
-        has_parent = set()
-        for node in tree:
-            for n in tree[node]:
-                has_parent.add(n)
-        root = list(set(tree.keys()) - has_parent)[0]
-        return
-​
     def dfs(node, level):
         nonlocal column
 ​
@@ -35,8 +26,6 @@ def solution():
 ​
     levels = defaultdict(list)
     column = 1
-    root = 0
-    find_root()
     dfs(root, 1)
 ​
     ans = sorted([(level, max(levels[level]) - min(levels[level]) + 1) for level in levels], key=lambda x: (x[1], -x[0]), reverse=True)
@@ -46,7 +35,15 @@ def solution():
 ​
 N = int(input())
 tree = defaultdict(list)
+nodes = defaultdict(int)
 for _ in range(N):
     node, l, r = map(int, input().split())
+    nodes[l] += 1
+    nodes[r] += 1
     tree[node].extend([l, r])
+root = 0
+for i in range(1, N+1):
+    if nodes[i] == 0:
+        root = i
+        break
 solution()
