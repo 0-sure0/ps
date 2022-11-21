@@ -16,17 +16,18 @@ def solution():
                 min_ans += '5'
                 max_ans += '5'
             else:
-                min_ans += str(10 ** m_cnt + 5)
-                max_ans += str(10 ** m_cnt * 5)
+                min_ans += str(10 ** (m_cnt - 1)) + '5'
+                max_ans += str(5 * (10 ** m_cnt))
                 m_cnt = 0
 ​
     if m_cnt != 0:
         max_ans += '1' * m_cnt
         min_ans += str(10 ** (m_cnt - 1))
-    print(max_ans)
-    print(min_ans)
+    print(int(max_ans))
+    print(int(min_ans))
     return
 ​
 ​
 s = input().rstrip()
 solution()
+​
