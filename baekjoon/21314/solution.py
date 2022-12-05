@@ -4,30 +4,33 @@ import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
 ​
-​
 def solution():
-    max_ans = min_ans = ''
-    m_cnt = 0
+    s = input().rstrip()
+    max_s = min_s = ''
+​
+    cnt = 0
     for c in s:
         if c == 'M':
-            m_cnt += 1
+            cnt += 1
         else:
-            if m_cnt == 0:
-                min_ans += '5'
-                max_ans += '5'
+            if cnt > 0:
+                max_s += str(5 * (10 ** cnt))
+                min_s += str(10 ** (cnt - 1)) + '5'
+                cnt = 0
             else:
-                min_ans += str(10 ** (m_cnt - 1)) + '5'
-                max_ans += str(5 * (10 ** m_cnt))
-                m_cnt = 0
+                max_s += '5'
+                min_s += '5'
 ​
-    if m_cnt != 0:
-        max_ans += '1' * m_cnt
-        min_ans += str(10 ** (m_cnt - 1))
-    print(int(max_ans))
-    print(int(min_ans))
+    if cnt > 0:
+        max_s += '1' * cnt
+        min_s += str(10 ** (cnt - 1))
+​
+    print(max_s)
+    print(min_s)
+​
+​
     return
 ​
 ​
-s = input().rstrip()
 solution()
 ​
