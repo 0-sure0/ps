@@ -4,18 +4,21 @@ import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
 ​
+​
 def solution():
     T = int(input())
-    dp = [[1] * 2001 if i == 0 else [0] * 2001 for i in range(11)]
-    for i in range(1, 11):
+    dp = [[1 if i == 0 and j != 0 else 0 for j in range(2001)] for i in range(10)]
+​
+    for i in range(1, 10):
         for j in range(1, 2001):
-            dp[i][j] = dp[i][j-1] + dp[i - 1][j // 2]
+            dp[i][j] = sum(dp[i - 1][:j // 2 + 1])
 ​
     for _ in range(T):
-        ans = set()
         N, M = map(int, input().split())
-        print(dp[N][M])
+        print(sum(dp[N - 1][:M + 1]))
 ​
     return
 ​
+​
 solution()
+​
