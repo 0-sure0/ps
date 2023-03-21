@@ -3,22 +3,21 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-from math import inf
+​
 ​
 def solution():
-    N, M = map(int, input().split())
-    l = [int(input()) for _ in range(N)]
-    dp1 = [[0] + [-inf] * M for _ in range(N + 1)]
-    dp2 = [[0] + [-inf] * M for _ in range(N + 1)]
+    n, m = map(int, input().split())
+    con = [[0] + [-1e9] * m for i in range(n + 1)]
+    notcon = [[0] + [-1e9] * m for i in range(n + 1)]
 ​
-    for i in range(1, N + 1):
-        for j in range(1, min(M, (i + 1) // 2 ) + 1):
-            dp1[i][j] = max(dp2[i-1][j], dp1[i-1][j])
-            dp2[i][j] = max(dp2[i-1][j], dp1[i-1][j-1]) + l[i-1]
-​
-​
-    print(max(dp1[N][M], dp2[N][M]))
+    for i in range(1, n + 1):
+        num = int(input())
+        for j in range(1, m + 1):
+            notcon[i][j] = max(con[i - 1][j], notcon[i - 1][j])
+            con[i][j] = max(con[i - 1][j], notcon[i - 1][j - 1]) + num
+    print(max(con[n][m], notcon[n][m]))
     return
+​
 ​
 solution()
 ​
