@@ -8,24 +8,11 @@ input = sys.stdin.readline
 def solution():
     N, M = map(int, input().split())
     ans = []
-    a = list(map(int, input().split()))
-    b = list(map(int, input().split()))
-    l, r = 0, 0
+    for _ in range(2):
+        ans.extend(list(map(int, input().split())))
+    ans.sort()
 ​
-    while l < N and r < M:
-        if a[l] <= b[r]:
-            ans.append(a[l])
-            l += 1
-        else:
-            ans.append(b[r])
-            r += 1
-​
-    if l < N:
-        ans += a[l:]
-    else:
-        ans += b[r:]
-​
-    print(*map(str, ans))
+    print(*ans)
     return
 ​
 solution()
