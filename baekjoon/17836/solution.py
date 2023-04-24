@@ -1,7 +1,7 @@
 // [문제 링크]: https://www.acmicpc.net/problem/17836
 
 import sys
-#sys.stdin = open('test.txt', 'r')
+#ys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
 from collections import deque
 ​
@@ -32,13 +32,12 @@ def solution():
                             q.append((nr, nc))
                             checked[nr][nc] = 1
                         elif board[nr][nc] == 2:
-                            if cnt + (N - 1 - nr) + (M - 1 - nc) <= T:
-                                ans = min(ans, cnt + (N - 1 - nr) + (M - 1 - nc))
+                            ans = min(ans, cnt + (N - 1 - nr) + (M - 1 - nc))
         return
 ​
     ans = sys.maxsize
     bfs()
-    print("Fail" if ans == sys.maxsize else ans)
+    print("Fail" if ans == sys.maxsize or ans > T else ans)
     return
 ​
 ​
