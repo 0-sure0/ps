@@ -1,30 +1,26 @@
 // [문제 링크]: https://www.acmicpc.net/problem/2805
 
 import sys
-#sys.stdin = open('test.txt', 'r')
+​
 input = sys.stdin.readline
 ​
+n, m = map(int, input().split())
+trees = list(map(int, input().split()))
+trees.sort()
 ​
-def solution():
-    n, m = map(int, input().split())
-    tree = list(map(int, input().split()))    
-    l, r = 0, max(tree)    
-    
-    while l <= r:
-        tmp_h = l + (r - l) // 2
-        tmp = 0
-        for t in tree:
-            tmp += max(0, t - tmp_h)
+l = 0
+r = max(trees)
 ​
-        if tmp >= m:            
-            l = tmp_h + 1
-            
-        else:
-            r = tmp_h - 1
+while l <= r:
+    mid = (l + r) // 2
+    cutted = [tree - mid if tree > mid else 0 for tree in trees]
+    cutted_sum = sum(cutted)
 ​
-    print(r)
-    return
+    if cutted_sum >= m:
+        l = mid + 1
+    else:
+        r = mid - 1
 ​
-solution()
+print(r)
 ​
 ​
