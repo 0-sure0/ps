@@ -1,36 +1,22 @@
 // [문제 링크]: https://www.acmicpc.net/problem/2661
 
-import sys
-#sys.stdin = open('test.txt', 'r')
-input = sys.stdin.readline
+def check(num):
+    length = len(num)
+    for idx in range(1, length//2 + 1):
+        if num[-idx:] == num[-(idx*2):-idx]:
+            return False
+    else:
+        return True
 ​
-​
-def solution():
-    n = int(input())
-​
-    def dfs(idx):
-        nonlocal s
-        
-        for i in range(1, idx // 2 + 1):
-            if s[-i:] == s[-2 * i: -i]:
-                return False
-​
-        if idx == n:
-            print(''.join(s))
-            return True
-​
-​
-        for i in range(1, 4):
-            s.append(str(i))
-            if dfs(idx + 1):
-                return True
-            s.pop()
-​
-        return False
-​
-    s = []
-    dfs(0)
+def recursive(num):
+    global N, res
+    if len(num) == N:
+        print(num)
+        exit()
+    for i in '123':
+        if check(num + str(i)):
+            recursive(num + str(i))
     return
 ​
-​
-solution()
+N = int(input())
+recursive('1')
