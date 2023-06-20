@@ -1,24 +1,29 @@
 // [문제 링크]: https://www.acmicpc.net/problem/18222
 
-import sys
-#sys.stdin = open('test.txt', 'r')
-input = sys.stdin.readline
+from sys import stdin
+from math import log
 ​
 ​
-def solution():
-    k = int(input())
-    cnt = 0
+def thue_morse(idx: int) -> int:
+    if idx == 0:
+        return 0
 ​
-    while k:
-        cur = 1
-        while cur * 2 < k:
-            cur <<= 1
-        k -= cur
-        cnt += 1
+    x = int(log(idx, 2))
 ​
-    ans = ~cnt & 1
-    print(ans)
-    return
+    val = 0
+    while x > 0:
+        if idx >= 2 ** x:
+            val ^= 1
+            idx %= 2 ** x
+        x -= 1
 ​
-solution()
+    return [val, val ^ 1][idx == 1]
 ​
+​
+def main():
+    k = int(stdin.readline())
+    print(thue_morse(k - 1))
+​
+​
+if __name__ == "__main__":
+    main()
