@@ -17,11 +17,11 @@ def solution():
     def bfs(start):
         checked = [0] * (n + 1)
         q = deque([start])
+        checked[start] = 1
         depth = 0
         while q:
             for _ in range(len(q)):
                 node = q.popleft()
-                checked[node] = 1
                 ans[depth].append(node)
                 for next_node in graph[node]:
                     if not checked[next_node]:
