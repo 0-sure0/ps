@@ -1,47 +1,39 @@
 // [문제 링크]: https://www.acmicpc.net/problem/1753
 
 import sys
+#sys.stdin = open('test.txt', 'r')
+input = sys.stdin.readline
+from collections import defaultdict
 import heapq
 ​
-input = sys.stdin.readline
-INF = int(1e9)
-def dijkstra(start):
-    q= []
-    heapq.heappush(q,(0,start))
-    distance[start] = 0
 ​
+def solution():
+    INF = 10 ** 9
+    V, E = map(int, input().split())
+    k = int(input())
+    graph = defaultdict(list)
+    for _ in range(E):
+        u, v, w = map(int, input().split())
+        graph[u].append((v, w))
+​
+    distance = [INF] * (V + 1)
+    distance[k] = 0
+    q = []
+    heapq.heappush(q, (0, k))
     while q:
-        dist, now = heapq.heappop(q)
-​
-        if distance[now] < dist:
+        dist, cur = heapq.heappop(q)
+        if distance[cur] < dist:
             continue
 ​
-        #현재 노드와 연결된 인접 노드 확인
-        for i in graph[now]:
-            cost =dist+ i[1]
-            if cost < distance[i[0]] :
-                distance[i[0]] = cost
-                heapq.heappush(q,(cost,i[0]))
+        for next_node, w in graph[cur]:
+            cost = dist + w
+            if cost < distance[next_node]:
+                distance[next_node] = cost
+                heapq.heappush(q, (cost, next_node))
+    for i in range(1, V + 1):
+        print("INF" if distance[i] == INF else distance[i])
+    return
 ​
 ​
-#V == 5일 때 1~5까지 노드가 있는거임.
-V, E = map(int,input().split())
+solution()
 ​
-snode = int(input()) #시작 노드
-​
-graph = [[] for _ in range(V+1)]
-distance = [INF] * (V+1) #최단 거리 테이블
-#연결 정보 입력
-for _ in range(E):
-    u,v,w = map(int,input().split())
-    graph[u].append((v,w))
-​
-​
-dijkstra(snode)
-​
-#i번째 줄에 i번 정점으로의 최단 경로의 경로값을 출력
-for i in range(1,V+1):
-    if distance[i] == INF:
-        print("INF")
-    else:
-        print(distance[i])
