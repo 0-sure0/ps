@@ -3,36 +3,32 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
+from collections import defaultdict
 import heapq
+​
 ​
 def solution():
     v, e = map(int, input().split())
-    parent = [-1] * (v + 1)
-    edge = []
-    answer = 0
+    vertices = [[] for _ in range(v + 1)]
     for _ in range(e):
         a, b, c = map(int, input().split())
-        heapq.heappush(edge, (c, a, b))
+        vertices[a].append((b, c))
+        vertices[b].append((a, c))
 ​
-    def find(x):
-        if parent[x] < 0:
-            return x
-        parent[x] = find(parent[x])
-        return parent[x]
+    checked = [0] * (v + 1)
+    q = []
+    answer = 0
+    heapq.heappush(q, (0, 1))
+    while q:
+        c, v = heapq.heappop(q)
+        if checked[v]:
+            continue
 ​
-    def should_union(a, b):
-        a = find(a)
-        b = find(b)
-        if a != b:
-            parent[b] = a
-            return True
-​
-        return False
-​
-    while edge:
-        weight, a, b = heapq.heappop(edge)
-        if should_union(a, b):
-            answer += weight
+        checked[v] = 1
+        answer += c
+        for next_v, cost in vertices[v]:
+            if not checked[next_v]:
+                heapq.heappush(q, (cost, next_v))
 ​
     print(answer)
     return
