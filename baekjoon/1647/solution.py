@@ -1,5 +1,6 @@
 // [문제 링크]: https://www.acmicpc.net/problem/1647
 
+import heapq
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
@@ -8,8 +9,10 @@ input = sys.stdin.readline
 def solution():
     n, m = map(int, input().split())
     uf = [-1] * (n + 1)
-    edge = [list(map(int, input().split())) for _ in range(m)]
-    edge.sort(key=lambda x: x[2])
+    edges = []
+    for _ in range(m):
+        a, b, c = map(int, input().split())
+        heapq.heappush(edges, (c, a, b))
 ​
     def find(x):
         if uf[x] < 0:
@@ -27,11 +30,11 @@ def solution():
 ​
     answer = 0
     max_c = 0
-    for a, b, c in edge:
+    while edges:
+        c, a, b = heapq.heappop(edges)
         if union(a, b):
             answer += c
-            max_c = max(max_c, c)
-​
+            max_c = max(c, max_c)
     print(answer - max_c)
     return
 ​
