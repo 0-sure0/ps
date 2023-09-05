@@ -6,25 +6,25 @@ input = sys.stdin.readline
 ​
 ​
 def solution():
-    N = int(input())
+    n = int(input())
     nums = input().split()
-    M = int(input())
-    dp = [[0 if i != j else 1 for j in range(N)] for i in range(N)]
+    m = int(input())
+    dp = [[0 if i != j else 1 for j in range(n)] for i in range(n)]
 ​
-    for step in range(1, N):
-        for start in range(N):
+    for step in range(1, n):
+        for start in range(n):
             end = start + step
-            if end >= N:
+            if end >= n:
                 break
             if step == 1 and nums[start] == nums[end]:
                 dp[start][end] = 1
-            elif nums[start] == nums[end] and dp[start+1][end-1] == 1:
+            elif nums[start] == nums[end] and dp[start + 1][end - 1] == 1:
                 dp[start][end] = 1
 ​
-    for _ in range(M):
-        S, E = map(int, input().split())
-        print(1 if dp[S-1][E-1] == 1 else 0)
+    for _ in range(m):
+        s, e = map(int, input().split())
+        print(dp[s - 1][e - 1])
+​
     return
 ​
 solution()
-​
