@@ -7,28 +7,28 @@ from collections import defaultdict
 ​
 ​
 def solution():
-    N, M = map(int, input().split())
+    n, m = map(int, input().split())
     graph = defaultdict(list)
-    for _ in range(M):
+    for _ in range(m):
         a, b = map(int, input().split())
         graph[a].append(b)
         graph[b].append(a)
 ​
-    def dfs(root, depth):
-        checked[root] = 1
-​
+    def dfs(node, depth):
+        visited[node] = 1
         if depth == 5:
-            return True
+            return 1
 ​
-        for node in graph[root]:
-            if not checked[node]:
-                if dfs(node, depth + 1):
-                    return True
-        checked[root] = 0
-        return False
+        for next_node in graph[node]:
+            if not visited[next_node]:
+                if dfs(next_node, depth + 1):
+                    return 1
+                visited[next_node] = 0
 ​
-    checked = [0] * N
-    for i in range(N):
+        return 0
+​
+    for i in range(n):
+        visited = [0] * n
         if dfs(i, 1):
             print(1)
             return
@@ -36,6 +36,4 @@ def solution():
     print(0)
     return
 ​
-​
 solution()
-​
