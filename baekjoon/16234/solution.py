@@ -3,56 +3,59 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-from collections import deque, defaultdict
+from collections import deque
 ​
 ​
 def solution():
-    N, L, R = map(int, input().split())
-    board = [list(map(int, input().split())) for _ in range(N)]
-    dir = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    ans = 0
+    n, L, R = map(int, input().split())
+    people = [list(map(int, input().split())) for _ in range(n)]
 ​
-    def bfs(r, c):
-        nonlocal total
-        q = deque([(r, c)])
-        tmp = [(r, c)]
-​
+    def check(r, c):
+        visited[r][c] = 1
+        dir = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        t = [(r, c)]
+        q = deque([[r, c]])
+        s = people[r][c]
         while q:
-            r, c = q.popleft()
-            for d in range(4):
-                nr = r + dir[d][0]
-                nc = c + dir[d][1]
-                if 0 <= nr < N and 0 <= nc < N and not checked[nr][nc] and L <= abs(board[r][c] - board[nr][nc]) <= R:
-                    checked[nr][nc] = 1
-                    q.append((nr, nc))
-                    tmp.append((nr, nc))
-                    total += board[nr][nc]
+            for _ in range(len(q)):
+                r, c = q.popleft()
+                for d in range(4):
+                    nr = r + dir[d][0]
+                    nc = c + dir[d][1]
+                    if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc] and L <= abs(people[r][c] - people[nr][nc]) <= R:
+                        visited[nr][nc] = 1
+                        q.append([nr, nc])
+                        s += people[nr][nc]
+                        t.append((nr, nc))
 ​
-        return tmp
+        if len(t) > 1:
+            t.append(s)
+        else:
+            t = []
 ​
+        return t
+​
+    answer = 0
     while True:
-        checked = [[0] * N for _ in range(N)]
-        move = False
+        visited = [[0] * n for _ in range(n)]
+        tmp = []
+        for r in range(n):
+            for c in range(n):
+                if not visited[r][c]:
+                    t = check(r, c)
+                    if t:
+                        tmp.append(t)
 ​
-        for r in range(N):
-            for c in range(N):
-                if not checked[r][c]:
-                    checked[r][c] = 1
-                    total = board[r][c]
-                    t = bfs(r, c)
-                    if len(t) > 1:
-                        move = True
-                        for tr, tc in t:
-                            board[tr][tc] = total // len(t)
-​
-        if not move:
+        if not tmp:
             break
-        ans += 1
 ​
-    print(ans)
+        for t in tmp:
+            s = t[-1]
+            for r, c in t[:-1]:
+                people[r][c] = s // (len(t) - 1)
+        answer += 1
 ​
+    print(answer)
     return
 ​
-​
 solution()
-​
