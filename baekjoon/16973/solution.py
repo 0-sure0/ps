@@ -1,57 +1,50 @@
 // [문제 링크]: https://www.acmicpc.net/problem/16973
 
+import sys
+#sys.stdin = open('test.txt', 'r')
+input = sys.stdin.readline
 from collections import deque
-from sys import stdin
-input = stdin.readline
-​
-N, M = map(int, input().split())
-graph = []
-for _ in range(N):
-    graph.append(list(map(int, input().split())))
-H, W, Sr, Sc, Fr, Fc = map(int, input().split())
-visited = [[False] * M for _ in range(N)]
-​
-dy = [-1, 1, 0, 0]
-dx = [0, 0, -1, 1]
-​
-# 시간초과를 막기 위해 미리 벽을 저장해둔다.
-walls = []
-for i in range(N):
-    for j in range(M):
-        if graph[i][j] == 1:
-            walls.append((i, j))
-​
-# 저장해둔 벽이 직사각형 범위 내에 있다면 False를 반환
-def check(i, j):
-    for w_row, w_col in walls:
-        if i <= w_row < i+H and j <= w_col < j+W:
-            return False
-    return True
 ​
 ​
-def bfs():
-    q = deque()
-    q.append((Sr - 1, Sc - 1, 0))
+def solution():
+    N, M = map(int, input().split())
+    board = [[0] * (M + 1)] + [[0] + list(map(int, input().split())) for _ in range(N)]
+    H, W, sr, sc, fr, fc = map(int, input().split())
+    wall = []
 ​
+    for r in range(1, N + 1):
+        for c in range(1, M + 1):
+            if board[r][c] == 1:
+                wall.append((r, c))
+​
+    def check_wall(r, c):
+        for wr, wc in wall:
+            if r <= wr < r + H and c <= wc < c + W:
+                return 1
+        return 0
+​
+    q = deque([[sr, sc]])
+    visited = [[0] * (M + 1) for _ in range(N + 1)]
+    visited[sr][sc] = 1
+    dir = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    cnt = 0
+    answer = sys.maxsize
     while q:
-        y, x, cnt = q.popleft()
-        visited[y][x] = True
+        cnt += 1
+        for _ in range(len(q)):
+            cr, cc = q.popleft()
+            for d in range(4):
+                nr = cr + dir[d][0]
+                nc = cc + dir[d][1]
+                if (nr, nc) == (fr, fc):
+                    answer = min(answer, cnt)
+                    continue
 ​
-        if y == Fr-1 and x == Fc-1:
-            print(cnt)
-            return
+                if 1 <= nr < N + 1 and 1 <= nc < M + 1 and 1 <= nr < N + 2 - H and 1 <= nc < M + 2 - W and not visited[nr][nc] and not check_wall(nr, nc):
+                    q.append((nr, nc))
+                    visited[nr][nc] = 1
 ​
-        for l in range(4):
-            yy = dy[l] + y
-            xx = dx[l] + x
-            # 직사각형 범위계산
-            if 0 <= yy < N and 0 <= xx < M and 0 <= yy + H - 1 < N and 0 <= xx + W - 1 < M:
-                if not visited[yy][xx]:
-                    if check(yy, xx):
-                        visited[yy][xx] = True
-                        q.append((yy, xx, cnt+1))
-​
-    print(-1)
+    print(answer if answer != sys.maxsize else -1)
     return
 ​
-bfs()
+solution()
