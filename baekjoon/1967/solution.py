@@ -4,40 +4,39 @@ import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
 from collections import defaultdict
-sys.setrecursionlimit(10**9)
+sys.setrecursionlimit(10 ** 6)
 ​
 def solution():
-    def dfs(node, d):
-        nonlocal max_d, t
+    N = int(input())
+    graph = defaultdict(list)
+    for _ in range(N - 1):
+        a, b, w = map(int, input().split())
+        graph[a].append((b, w))
+        graph[b].append((a, w))
 ​
-        checked[node] = 1
+    def dfs(node, t):
+        nonlocal goal, answer
 ​
-        for n, v in tree[node]:
-            if not checked[n]:
-                dfs(n, d + v)
+        visited[node] = 1
 ​
-        if d > max_d:
-            max_d = d
-            t = node
+        for n, w in graph[node]:
+            if not visited[n]:
+                dfs(n, t + w)
 ​
+        if answer < t:
+            goal = node
+            answer = t
         return
 ​
-    t = max_d = 0
-    checked = defaultdict(int)
+    visited = defaultdict(int)
+    answer = 0
+    goal = 0
     dfs(1, 0)
-    s = t
-    t = max_d = 0
-    checked.clear()
-    dfs(s, 0)
-    print(max_d)
+    visited.clear()
+    answer = 0
+    dfs(goal, 0)
+​
+    print(answer)
     return
 ​
-​
-tree = defaultdict(list)
-N = int(input())
-for _ in range(N-1):
-    a, b, c = map(int, input().split())
-    tree[a].append((b, c))
-    tree[b].append((a, c))
 solution()
-​
