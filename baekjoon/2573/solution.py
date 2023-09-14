@@ -9,61 +9,64 @@ from collections import deque
 def solution():
     N, M = map(int, input().split())
     board = []
-    dir = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    ice = []
-    answer = 0
-    for r in range(N):
-        t = list(map(int, input().split()))
-        for c in range(M):
-            if t[c] != 0:
-                ice.append((r, c))
-        board.append(t)
+    ice = deque()
+    for i in range(N):
+        tmp = list(map(int, input().split()))
+        for j in range(M):
+            if tmp[j] > 0:
+                ice.append((i, j))
+        board.append(tmp)
 ​
     def bfs(r, c):
+        dir = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+        visited[r][c] = 1
         q = deque([(r, c)])
-        checked[r][c] = 1
-        sea_list = []
-​
+        to_del = []
         while q:
-            r, c = q.popleft()
-            sea = 0
-            for d in range(4):
-                nr = r + dir[d][0]
-                nc = c + dir[d][1]
-                if 0 <= nr < N and 0 <= nc < M:
-                    if not board[nr][nc]:
-                        sea += 1
-                    elif board[nr][nc] and not checked[nr][nc]:
-                        q.append((nr, nc))
-                        checked[nr][nc] = 1
-            if sea > 0:
-                sea_list.append((r, c, sea))
+            for _ in range(len(q)):
+                cnt = 0
+                r, c = q.popleft()
+                for d in range(4):
+                    nr = r + dir[d][0]
+                    nc = c + dir[d][1]
+                    if 0 <= nr < N and 0 <= nc < M:
+                        if board[nr][nc] == 0:
+                            cnt += 1
+                        else:
+                            if not visited[nr][nc]:
+                                visited[nr][nc] = 1
+                                q.append((nr, nc))
+                if cnt:
+                    if cnt == 4:
+                        return 1
+                    to_del.append((r, c, cnt))
 ​
-        for r, c, sea in sea_list:
-            board[r][c] = max(0, board[r][c] - sea)
+        for r, c, cnt in to_del:
+            board[r][c] = max(0, board[r][c] - cnt)
 ​
         return 1
 ​
+    answer = 0
     while ice:
-        checked = [[0] * M for _ in range(N)]
-        deleted = set()
         group = 0
+        visited = [[0] * M for _ in range(N)]
         for r, c in ice:
-            if board[r][c] and not checked[r][c]:
+            if not visited[r][c]:
                 group += bfs(r, c)
-            if board[r][c] == 0:
-                deleted.add((r, c))
-​
         if group > 1:
             print(answer)
             return
 ​
-        ice = list(set(ice) - deleted)
+        for _ in range(len(ice)):
+            r, c = ice[0]
+            if board[r][c] == 0:
+                ice.popleft()
+            else:
+                ice.rotate(-1)
+​
         answer += 1
 ​
     print(0)
     return
 ​
 solution()
-​
-​
