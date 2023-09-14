@@ -1,29 +1,49 @@
 // [문제 링크]: https://www.acmicpc.net/problem/16954
 
-from collections import deque
-input = __import__('sys').stdin.readline
-n = 8
-graph = [list(input().strip()) for _ in range(n)]
-visited = [[False] * n for _ in range(n)]
-dx = [0, 0, 1, -1, 1, -1, 1, -1, 0]
-dy = [1, -1, 0, 0, 1, 1, -1, -1, 0]
+import sys
+#sys.stdin = open('test.txt', 'r')
+input = sys.stdin.readline
+from collections import deque, defaultdict
 ​
-q = deque()
-q.append((7, 0))
-visited[7][0] = True
-ans = 0
-while q:
-    i, j = q.popleft()
-    if graph[i][j] == '#':
-        continue
-    for idx in range(n + 1):
-        ni = i + dy[idx]
-        nj = j + dx[idx]
-        if ni < 0 or ni >= n or nj < 0 or nj >= n or graph[ni][nj] == '#':
-            continue
-        if ni == 0:
-            ans = 1
-        if not visited[ni - 1][nj]:
-            visited[ni - 1][nj] = True
-            q.append((ni - 1, nj))
-print(ans)
+​
+def solution():
+    wall = []
+    for i in range(8):
+        tmp = list(input().rstrip())
+        for j in range(8):
+            if tmp[j] == '#':
+                wall.append((i, j))
+​
+    q = deque([(7, 0)])
+    dir = [(0, 1), (1, 0), (0, -1), (-1, 0), (-1, 1), (1, 1), (1, -1), (-1, -1), (0, 0)]
+    visited = defaultdict(int)
+​
+    def move_wall():
+        nonlocal wall
+        wall = list(filter(lambda x: x[0] < 8, map(lambda x: (x[0] + 1, x[1]), wall)))
+        return
+​
+    while q:
+        for _ in range(len(q)):
+            r, c = q.popleft()
+            if (r, c) in wall:
+                continue
+​
+            if r == 0:
+                print(1)
+                return
+​
+            for d in range(9):
+                nr = r + dir[d][0]
+                nc = c + dir[d][1]
+                if 0 <= nr < 8 and 0 <= nc < 8 and not visited[(nr, nc)] and (nr, nc) not in wall:
+                    q.append((nr, nc))
+                    visited[(nr, nc)] = 1
+        move_wall()
+        if wall:
+            visited.clear()
+​
+    print(0)
+    return
+​
+solution()
