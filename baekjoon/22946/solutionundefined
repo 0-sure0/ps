@@ -1,0 +1,78 @@
+// [문제 링크]: https://www.acmicpc.net/problem/22946
+
+#include <iostream>
+#include <vector>
+#include <tuple>
+#include <algorithm>
+#include <cmath>
+​
+using namespace std;
+​
+vector<tuple<int, int, int>> input;
+vector<int> map[5003];
+bool c[5003] = { false };
+​
+int N;
+bool cmp(tuple<int,int,int> a, tuple<int, int, int> b){
+    return get<2>(a) < get<2>(b);
+} 
+int GetRelation(tuple<int, int, int> k, tuple<int, int, int> l) {
+    long double x1 = get<0>(k);
+    long double y1 = get<1>(k);
+    long double r1 = get<2>(k);
+    long double x2 = get<0>(l);
+    long double y2 = get<1>(l);
+    long double r2 = get<2>(l);
+​
+    long double pow1 = (x2 - x1) * (x2 - x1);
+    long double pow2 = (y2 - y1) * (y2 - y1);
+    long double d = sqrt(pow1 + pow2);
+    //외부에 있으면 0, 내부에 있으면 1을 반환
+    if (r2 + r1 < d) return 0;
+    else if (d == 0 || (abs(r2 - r1) > d)) return 1;
+}
+void Connect(int x) {
+    int i = x + 1;
+    bool endFlag = false;
+    while (i < input.size()) {
+        if (GetRelation(input[x], input[i])) {
+            if (!map[i].empty()) endFlag = true;
+            map[x].push_back(i);
+            map[i].push_back(x);
+            x = i;
+        }
+        if (endFlag) return;
+        i++;
+    }
+}
+int Dfs(int x, int depth) {
+    if (c[x]) return 0;
+    c[x] = true;
+    int cnt = depth;
+    for (int i = 0; i < map[x].size(); i++) {
+        int nx = map[x][i];
+        depth = max(depth, Dfs(nx, cnt + 1));
+    }
+    c[x] = false;
+    return depth;
+}
+int main() {
+    cin.tie(0);
+    cout.tie(0);
+    ios::sync_with_stdio(false);
+    tuple<int, int, int> empty1 = make_tuple(0, 0, 10000000);
+    input.push_back(empty1);
+    cin >> N;
+    for (int i = 1; i <= N; i++) {
+        int x, y, r;
+        cin >> x >> y >> r;
+        input.push_back(make_tuple(x, y, r));
+    }
+    sort(input.begin(), input.end(), cmp);
+    for (int i = 0; i < input.size(); i++) {
+        if (map[i].empty()) Connect(i);
+    }
+    int answer = 0;
+    for(int i = 0; i < input.size(); i++) answer = max(answer,Dfs(i,0));
+    cout << answer;
+}
