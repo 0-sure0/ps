@@ -3,41 +3,27 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-​
+from collections import Counter
 ​
 def solution():
-    n, m = map(int, input().split())
-    dna = [input().rstrip() for _ in range(n)]
-    answer = ''
-    distance = 0
-    for j in range(m):
-        t = a = g = c = 0
-        for i in range(n):
-            if dna[i][j] == 'T':
-                t += 1
-            elif dna[i][j] == 'A':
-                a += 1
-            elif dna[i][j] == 'G':
-                g += 1
-            elif dna[i][j] == 'C':
-                c += 1
+    N, M = map(int, input().split())
+    words = [input().rstrip() for _ in range(N)]
+    count = [[] for _ in range(M)]
+    for word in words:
+        for i in range(M):
+            count[i].append(word[i])
 ​
-        if max(t, a, g, c) == a:
-           answer += 'A'
-           distance += g + c + t
-        elif max(t, a, g, c) == c:
-            answer += 'C'
-            distance += t + g + a
-        elif max(t, a, g, c) == g:
-            answer += 'G'
-            distance += t + a + c
-        elif max(t, a, g, c) == t:
-            answer += 'T'
-            distance += c + a + g
+    answer = ''
+    cnt = 0
+    for i in range(M):
+        count[i] = Counter(count[i])
+        common = sorted(count[i].most_common(), key=lambda x: (-x[1], x[0]))
+        answer += common[0][0]
+        for c, v in common[1:]:
+            cnt += v
+​
     print(answer)
-    print(distance)
+    print(cnt)
     return
 ​
-​
 solution()
-​
