@@ -3,27 +3,35 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-from itertools import combinations
+from math import factorial
+from collections import deque
+​
 ​
 def solution():
-    n, m = map(int, input().split())
-    ice = [[0] * n for _ in range(n)]
-    for i in range(m):
-        a, b = map(int, input().split())
-        a -= 1; b -= 1;
-        ice[a][b] = 1
-        ice[b][a] = 1
+    N, M = map(int, input().split())
+    answer = factorial(N) // (factorial(N - 3) * factorial(3))
+    ban = [list(map(int, input().split())) for _ in range(M)]
 ​
-    answer = 0
-    for comb in combinations(range(n), 3):
-        if ice[comb[0]][comb[1]] or ice[comb[0]][comb[2]] or ice[comb[1]][comb[2]]:
-            continue
+    def bfs(l):
+        q = deque([l])
 ​
-        answer += 1
+        while q:
+            l = q.popleft()
+            if len(l) == 3:
+                banned.add(tuple(sorted(l)))
+                continue
 ​
-    print(answer)
+            for i in range(1, N + 1):
+                if i not in l:
+                    q.append(l + [i])
+​
+        return
+​
+    banned = set()
+    for b in ban:
+        bfs(b)
+​
+    print(answer - len(list(banned)))
     return
 ​
-​
 solution()
-​
