@@ -3,39 +3,35 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-import math
+​
 ​
 def solution():
-    n: int = int(input())
-    s: str = input().rstrip()
-    result: int = -math.inf
+    N = int(input())
+    s = input().rstrip()
 ​
-    def calc(n1: int, op: int, n2: int):
-        if op == '+':
-            return n1 + n2
-        elif op == '-':
-            return n1 - n2
-        elif op == '*':
-            return n1 * n2
+    def calc(n1, n2, op):
+        n1 = str(n1)
+        n2 = str(n2)
+        return eval(n1 + op + n2)
 ​
-    def dfs(idx: int, value: int):
-        nonlocal result
-        if idx == n - 1:
-            result = max(result, value)
+    def func(idx, value):
+        nonlocal answer
+​
+        if idx == N - 1:
+            answer = max(answer, value)
             return
 ​
-        if idx + 2 < n:
-            dfs(idx + 2, calc(value, s[idx + 1], int(s[idx + 2])))
+        func(idx + 2, calc(value, s[idx + 2], s[idx + 1]))
 ​
-        if idx + 4 < n:
-            dfs(idx + 4, calc(value, s[idx + 1], calc(int(s[idx + 2]), s[idx + 3], int(s[idx + 4]))))
+        if idx + 4 < N:
+            func(idx + 4, calc(value, calc(s[idx + 2], s[idx + 4], s[idx + 3]), s[idx + 1]))
 ​
         return
 ​
-    dfs(0, int(s[0]))
-    print(result)
+    answer = -sys.maxsize
+    func(0, int(s[0]))
+    print(answer)
     return
 ​
+​
 solution()
-​
-​
