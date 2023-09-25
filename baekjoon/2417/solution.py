@@ -3,12 +3,19 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-import math
+​
 ​
 def solution():
     N = int(input())
-    q = int(math.sqrt(N))
-    print(q + 1 if q ** 2 < N else q)
+    l, r = 0, N
+    while l <= r:
+        q = (l + r) // 2
+        if q ** 2 < N:
+            l = q + 1
+        elif q ** 2 >= N:
+            r = q - 1
+​
+    print(r + 1)
     return
 ​
 ​
