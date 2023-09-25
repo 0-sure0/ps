@@ -3,26 +3,13 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-from math import sqrt
-​
+import math
 ​
 def solution():
-    n = int(input())
-    if n == 0:
-        print(0)
-        return
-    
-    l, r = 1, n
-    while l <= r:
-        mid = (l + r) // 2
-        if mid ** 2 >= n:
-            r = mid - 1
-        else:
-            l = mid + 1
-​
-    print(r + 1)
+    N = int(input())
+    q = int(math.sqrt(N))
+    print(q + 1 if q ** 2 < N else q)
     return
 ​
+​
 solution()
-​
-​
