@@ -6,13 +6,14 @@ input = sys.stdin.readline
 ​
 ​
 def solution():
-    s = int(input())
+    S = int(input())
     n = 1
-    while n * (n + 1) / 2 <= s:
+​
+    while (n * (n + 1) // 2) <= S:
         n += 1
+​
     print(n - 1)
     return
 ​
+​
 solution()
-​
-​
