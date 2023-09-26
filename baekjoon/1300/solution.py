@@ -1,18 +1,33 @@
 // [문제 링크]: https://www.acmicpc.net/problem/1300
 
-N, K = int(input()), int(input())
-start, end = 1, K
+import sys
+#sys.stdin = open('test.txt', 'r')
+input = sys.stdin.readline
 ​
-while start <= end:
-    mid = (start + end) // 2
-    
-    temp = 0
-    for i in range(1, N+1):
-        temp += min(mid//i, N) #mid 이하의 i의 배수 or 최대 N
-    
-    if temp >= K: #이분탐색 실행
-        answer = mid
-        end = mid - 1
-    else:
-        start = mid + 1
-print(answer)
+​
+def solution():
+    N = int(input())
+    K = int(input())
+​
+    def count(v):
+        cnt = 0
+        for i in range(1, N + 1):
+            cnt += min(v // i, N)
+​
+        return cnt
+​
+    l, r = 1, 10 ** 9
+    answer = 1
+    while l <= r:
+        mid = (l + r) // 2
+        if count(mid) >= K:
+            answer = mid
+            r = mid - 1
+        else:
+            l = mid + 1
+​
+    print(answer)
+    return
+​
+​
+solution()
