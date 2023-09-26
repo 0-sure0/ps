@@ -6,30 +6,29 @@ input = sys.stdin.readline
 ​
 ​
 def solution():
-    n, c = map(int, input().split())
-    house = sorted([int(input()) for _ in range(n)])
-    start, end = 1, house[n - 1]
+    N, C = map(int, input().split())
+    house = sorted([int(input()) for _ in range(N)])
+    s, e = 1, house[N - 1]
     answer = -1
 ​
-    while start <= end:
-        mid = start + (end - start) // 2
+    while s <= e:
+        mid = (s + e) // 2
         cnt = 1
         last = house[0]
 ​
-        for i in range(1, n):
+        for i in range(1, N):
             if house[i] - last >= mid:
                 cnt += 1
                 last = house[i]
 ​
-        if cnt >= c:
+        if cnt >= C:
             answer = mid
-            start = mid + 1
+            s = mid + 1
         else:
-            end = mid - 1
+            e = mid - 1
 ​
     print(answer)
     return
 ​
 ​
 solution()
-​
