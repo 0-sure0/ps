@@ -3,17 +3,29 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-from itertools import combinations
 ​
 ​
 def solution():
     N, S = map(int, input().split())
     l = list(map(int, input().split()))
     ans = 0
-    for i in range(1, len(l) + 1):
-        for comb in combinations(l, i):
-            if sum(comb) == S:
-                ans += 1
+​
+    def dfs(i, t):
+        nonlocal ans
+        if i >= len(l):
+            return
+​
+        if t == S:
+            ans += 1
+​
+        for j in range(i + 1, len(l)):
+            dfs(j, t + l[j])
+​
+        return
+​
+    for i in range(len(l)):
+        dfs(i, l[i])
+​
     print(ans)
     return
 ​
