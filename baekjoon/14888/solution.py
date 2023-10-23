@@ -3,48 +3,55 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
+from math import ceil
 ​
 ​
 def solution():
-    n = int(input())
-    nums = list(map(int, input().split()))
-    op = list(map(int, input().split()))
-    max_ans = -sys.maxsize
-    min_ans = sys.maxsize
+    N = int(input())
+    l = list(map(int, input().split()))
+    ops = list(map(int, input().split()))
 ​
-    def dfs(idx, value):
+    def dfs(idx, t):
         nonlocal max_ans, min_ans
-​
-        if idx == n:
-            max_ans = max(max_ans, value)
-            min_ans = min(min_ans, value)
+        if idx >= len(l) - 1:
+            max_ans = max(max_ans, t)
+            min_ans = min(min_ans, t)
             return
 ​
-        if op[0]:
-            op[0] -= 1
-            dfs(idx + 1, value + nums[idx])
-            op[0] += 1
+        for i in range(len(ops)):
+            if not ops[i]:
+                continue
+            if i == 0:
+                ops[0] -= 1
+                dfs(idx + 1, t + l[idx + 1])
+                ops[0] += 1
 ​
-        if op[1]:
-            op[1] -= 1
-            dfs(idx + 1, value - nums[idx])
-            op[1] += 1
+            if i == 1:
+                ops[1] -= 1
+                dfs(idx + 1, t - l[idx + 1])
+                ops[1] += 1
 ​
-        if op[2]:
-            op[2] -= 1
-            dfs(idx + 1, value * nums[idx])
-            op[2] += 1
+            if i == 2:
+                ops[2] -= 1
+                dfs(idx + 1, t * l[idx + 1])
+                ops[2] += 1
 ​
-        if op[3]:
-            op[3] -= 1
-            dfs(idx + 1, int(value / nums[idx]))
-            op[3] += 1
+            if i == 3:
+                ops[3] -= 1
+                tmp = 0
+                if t < 0 or l[idx + 1] < 0:
+                    tmp = ceil(t / l[idx + 1])
+                else:
+                    tmp = t // l[idx + 1]
+                dfs(idx + 1, tmp)
+                ops[3] += 1
 ​
         return
 ​
-    dfs(1, nums[0])
-    print(max_ans)
-    print(min_ans)
+    max_ans = -sys.maxsize
+    min_ans = sys.maxsize
+    dfs(0, l[0])
+    print(max_ans, min_ans, sep='\n')
     return
 ​
 solution()
