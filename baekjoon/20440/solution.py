@@ -6,32 +6,28 @@ input = sys.stdin.readline
 from collections import defaultdict
 ​
 ​
-def solution():
-    n = int(input())
-    mos_io = defaultdict(int)
-    for _ in range(n):
-        i, o = map(int, input().split())
-        mos_io[i] += 1
-        mos_io[o] -= 1
+N = int(input())
+dic = defaultdict(int)
+for _ in range(N):
+    s, e = map(int, input().split())
+    dic[s] += 1
+    dic[e] -= 1
 ​
-    max_cnt = -1
-    answer = [0, 0]
-    flag = False
-    s = 0
+ans = cur = 0
+answer = [0, 0]
+flag = False
 ​
-    for t in sorted(mos_io.keys()):
-        s += mos_io[t]
-        if s > max_cnt:
-            max_cnt = s
-            answer[0] = t
-            flag = True
+for k in sorted(dic.keys()):
+    cur += dic[k]
+    if cur > ans:
+        ans = cur
+        answer[0] = k
+        flag = True
 ​
-        elif s < max_cnt and flag:
-            answer[1] = t
-            flag = False
+    elif cur < ans and flag:
+        answer[1] = k
+        flag = False
 ​
-    print(max_cnt)
-    print(*answer)
-​
-solution()
+print(ans)
+print(*answer)
 ​
