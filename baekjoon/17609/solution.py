@@ -3,30 +3,25 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
+sys.setrecursionlimit(10 ** 7)
+T = int(input())
 ​
 ​
-def solution():
-    t = int(input())
+def check(s, l, r, flag):
+    while l <= r:
+        if s[l] != s[r]:
+            if flag:
+                return 2
+            a = check(s, l + 1, r, True)
+            b = check(s, l, r - 1, True)
+            return min(a, b)
 ​
-    def palin(start, end, del_cnt):
-        if del_cnt == 2:
-            return del_cnt
+        l += 1
+        r -= 1
 ​
-        while start <= end:
-            if s[start] != s[end]:
-                a = palin(start + 1, end, del_cnt + 1)
-                b = palin(start, end - 1, del_cnt + 1)
-                return a if a <= b else b
-            start += 1
-            end -= 1
+    return 1 if flag else 0
 ​
-        else:
-            return del_cnt
-​
-    for _ in range(t):
-        s = input().rstrip()
-        print(palin(0, len(s) - 1, 0))
-    return
-​
-solution()
+for _ in range(T):
+    s = input().rstrip()
+    print(check(s, 0, len(s) - 1, False))
 ​
