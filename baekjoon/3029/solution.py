@@ -4,27 +4,20 @@ import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
 ​
+cur_h, cur_m, cur_s = map(int, input().split(':'))
+tgt_h, tgt_m, tgt_s = map(int, input().split(':'))
 ​
-def solution():
-    h, m, s = map(int, input().split(':'))
-    t = h * 3600 + m * 60 + s
-    th, tm, ts = map(int, input().split(':'))
-    tt = th * 3600 + tm * 60 + ts
-    answer = tt - t
+cur_time = cur_h * 3600 + cur_m * 60 + cur_s
+tgt_time = tgt_h * 3600 + tgt_m * 60 + tgt_s
+if tgt_time <= cur_time:
+    tgt_time += 24 * 3600
+ans = []
+cnt = 3
+time = tgt_time - cur_time
+while cnt:
+    ans.append(str(time // (60 ** (cnt - 1))).zfill(2))
+    time %= (60 ** (cnt - 1))
+    cnt -= 1
 ​
-    if answer < 0:
-        answer += 24 * 3600
-    elif answer == 0:
-        print('24:00:00')
-        return
-​
-    ah = str(answer // 3600).zfill(2)
-    answer %= 3600
-    am = str(answer // 60).zfill(2)
-    answer %= 60
-    asec = str(answer).zfill(2)
-    print(ah + ':' + am + ':' + asec)
-    return
-​
-solution()
+print(':'.join(ans))
 ​
