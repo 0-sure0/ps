@@ -6,15 +6,15 @@ input = sys.stdin.readline
 ​
 ​
 def bellman_ford():
-    dist = [0] * (N + 1)
+    dist = [sys.maxsize] * (N + 1)
+    dist[0] = 0
 ​
-    for i in range(N):
+    for i in range(N + 1):
         for s, e, t in edges:
             if dist[s] != sys.maxsize and dist[s] + t < dist[e]:
                 dist[e] = dist[s] + t
-                if i == N - 1:
+                if i == N:
                     return True
-​
     return False
 ​
 ​
@@ -31,6 +31,9 @@ for _ in range(TC):
     for _ in range(W):
         S, E, T = map(int, input().split())
         edges.append((S, E, -T))
+​
+    for i in range(1, N + 1):
+        edges.append((0, i, 0))
 ​
     print("YES" if bellman_ford() else "NO")
 ​
