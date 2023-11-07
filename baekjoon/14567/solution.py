@@ -6,32 +6,31 @@ input = sys.stdin.readline
 from collections import defaultdict, deque
 ​
 ​
-def solution():
-    n, m = map(int, input().split())
-    graph = defaultdict(list)
-    indegree = [0] * (n + 1)
-    for _ in range(m):
-        a, b = map(int, input().split())
-        graph[a].append(b)
-        indegree[b] += 1
+N, M = map(int, input().split())
+ins = [0] * (N + 1)
+ans = [0] * (N + 1)
+l = defaultdict(list)
+for _ in range(M):
+    a, b = map(int, input().split())
+    ins[b] += 1
+    l[a].append(b)
 ​
-    answer = [0] * (n + 1)
-    q = deque()
-    for i in range(1, n + 1):
-        if indegree[i] == 0:
-            q.append(i)
-            answer[i] = 1
-    while q:
-        cur = q.popleft()
-        for node in graph[cur]:
-            indegree[node] -= 1
-            if indegree[node] == 0:
-                q.append(node)
-                answer[node] = answer[cur] + 1
+q = deque()
+for i in range(1, N + 1):
+    if ins[i] == 0:
+        q.append(i)
 ​
-    print(*answer[1:], sep=' ')
-    return
+cnt = 0
+while q:
+    cnt += 1
+    for _ in range(len(q)):
+        node = q.popleft()
+        ans[node] = cnt
+        for next_node in l[node]:
+            ins[next_node] -= 1
+            if ins[next_node] == 0:
+                q.append(next_node)
 ​
+print(*ans[1:])
 ​
-solution()
 ​
