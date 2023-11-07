@@ -3,48 +3,34 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-from collections import defaultdict
-import heapq
 ​
 ​
-def solution():
-    tc = int(input())
-    INF = sys.maxsize
+def bellman_ford():
+    dist = [0] * (N + 1)
 ​
-    #bellman ford
-    def bf(node):
-        distance = [INF] * (n + 1)
-        distance[node] = 0
+    for i in range(N):
+        for s, e, t in edges:
+            if dist[s] != sys.maxsize and dist[s] + t < dist[e]:
+                dist[e] = dist[s] + t
+                if i == N - 1:
+                    return True
 ​
-        for i in range(n):
-            for edge in edges:
-                cur, next_node, cost = edge
-​
-                if cost + distance[cur] < distance[next_node]:
-                    distance[next_node] = cost + distance[cur]
-​
-                    if i == n - 1:
-                        return True
-        return False
-​
-    for _ in range(tc):
-        edges = []
-        n, m, w = map(int, input().split())
-        for _ in range(m):
-            s, e, t = map(int, input().split())
-            edges.append((s, e, t))
-            edges.append((e, s, t))
-​
-        for _ in range(w):
-            s, e, t = map(int, input().split())
-            edges.append((s, e, -t))
-​
-        if bf(1):
-            print('YES')
-        else:
-            print('NO')
-    return
+    return False
 ​
 ​
-solution()
+TC = int(input())
+for _ in range(TC):
+    N, M, W = map(int, input().split())
+    edges = []
+​
+    for _ in range(M):
+        S, E, T = map(int, input().split())
+        edges.append((S, E, T))
+        edges.append((E, S, T))
+​
+    for _ in range(W):
+        S, E, T = map(int, input().split())
+        edges.append((S, E, -T))
+​
+    print("YES" if bellman_ford() else "NO")
 ​
