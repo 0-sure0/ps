@@ -3,60 +3,52 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-from collections import defaultdict, deque
-import heapq
+from collections import defaultdict
 import math
+import heapq
 ​
 ​
-def dist(coord1, coord2):
-    x1, y1 = coord1
-    x2, y2 = coord2
-    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+N, W = map(int, input().split())
+M = float(input())
+factory = [0] * (N + 1)
+graph = defaultdict(list)
 ​
 ​
-def solution():
-    n, w = map(int, input().split())
-    m = float(input().rstrip())
-    coord = [0] * (n + 1)
-    graph = defaultdict(list)
-​
-    for i in range(1, n + 1):
-        x, y = map(int, input().split())
-        coord[i] = (x, y)
-​
-    for i in range(1, n + 1):
-        for j in range(i + 1, n + 1):
-            d = dist(coord[i], coord[j])
-            if d <= m:
-                graph[i].append((j, d))
-                graph[j].append((i, d))
-​
-    for _ in range(w):
-        a, b = map(int, input().split())
-        graph[a].append((b, 0))
-        graph[b].append((a, 0))
-​
-    def dijkstra():
-        distance = [10**9 for _ in range(n + 1)]
-        distance[1] = 0
-        q = []
-        heapq.heappush(q, (0, 1))
-​
-        while q:
-            cost, cur = heapq.heappop(q)
-            if distance[cur] < cost:
-                continue
-​
-            for next_node, weight in graph[cur]:
-                if cost + weight < distance[next_node]:
-                    distance[next_node] = cost + weight
-                    heapq.heappush(q, (cost + weight, next_node))
-​
-        return int(distance[n] * 1000)
-    
-    print(dijkstra())
-    return
+def get_distance(a, b):
+    return math.sqrt((factory[a][0] - factory[b][0]) ** 2 + (factory[a][1] - factory[b][1]) ** 2)
 ​
 ​
-solution()
+for i in range(1, N + 1):
+    x, y = map(int, input().split())
+    factory[i] = (x, y)
+​
+for i in range(1, N + 1):
+    for j in range(i + 1, N + 1):
+        d = get_distance(i, j)
+        if d <= M:
+            graph[i].append((d, j))
+            graph[j].append((d, i))
+​
+for _ in range(W):
+    a, b = map(int, input().split())
+    graph[a].append((0, b))
+    graph[b].append((0, a))
+​
+​
+dist = [sys.maxsize] * (N + 1)
+dist[1] = 0
+q = []
+heapq.heappush(q, (0.0, 1))
+while q:
+    d, node = heapq.heappop(q)
+    if dist[node] < d:
+        continue
+​
+    for w, next_node in graph[node]:
+        if d + w < dist[next_node]:
+            dist[next_node] = d + w
+            heapq.heappush(q, (d + w, next_node))
+​
+print(int(dist[N] * 1000))
+​
 ​
