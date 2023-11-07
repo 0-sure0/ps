@@ -7,33 +7,31 @@ from collections import defaultdict
 import heapq
 ​
 ​
-def solution():
-    INF = 10 ** 9
-    V, E = map(int, input().split())
-    k = int(input())
-    graph = defaultdict(list)
-    for _ in range(E):
-        u, v, w = map(int, input().split())
-        graph[u].append((v, w))
+V, E = map(int, input().split())
+K = int(input())
+edges = defaultdict(list)
+INF = sys.maxsize
+dist = [INF] * (V + 1)
+dist[K] = 0
 ​
-    distance = [INF] * (V + 1)
-    distance[k] = 0
-    q = []
-    heapq.heappush(q, (0, k))
-    while q:
-        dist, cur = heapq.heappop(q)
-        if distance[cur] < dist:
-            continue
+for _ in range(E):
+    u, v, w = map(int, input().split())
+    edges[u].append((v, w))
 ​
-        for next_node, w in graph[cur]:
-            cost = dist + w
-            if cost < distance[next_node]:
-                distance[next_node] = cost
-                heapq.heappush(q, (cost, next_node))
-    for i in range(1, V + 1):
-        print("INF" if distance[i] == INF else distance[i])
-    return
+q = []
+heapq.heappush(q, (0, K))
 ​
+while q:
+    d, node = heapq.heappop(q)
+    if dist[node] < d:
+        continue
 ​
-solution()
+    for next_node, w in edges[node]:
+        if d + w < dist[next_node]:
+            dist[next_node] = d + w
+            heapq.heappush(q, (d + w, next_node))
+​
+for i in range(1, V + 1):
+    print(dist[i] if dist[i] != INF else 'INF')
+​
 ​
