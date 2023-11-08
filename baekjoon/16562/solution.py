@@ -3,35 +3,33 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
-sys.setrecursionlimit(10**9)
 ​
 def solution():
-    n, m, k = map(int, input().split())
-    uf = [-1 for i in range(n + 1)]
-    fee = [0] + list(map(int, input().split()))
+    N, M, K = map(int, input().split())
+    friend = [i for i in range(N + 1)]
+    money = [0] + list(map(int, input().split()))
 ​
-    def find(x):
-        if uf[x] < 0:
-            return x
-        uf[x] = find(uf[x])
-        return uf[x]
+    def find(a):
+        if a == friend[a]:
+            return a
 ​
-    def merge(a, b):
-        a = find(a)
-        b = find(b)
-        if a == b:
-            return
-        uf[b] = a
-        fee[a] = min(fee[a], fee[b])
-        fee[b] = 0
-        return
+        friend[a] = find(friend[a])
+        return friend[a]
 ​
-    for _ in range(m):
-        a, b = map(int, input().split())
-        merge(a, b)
+    for _ in range(M):
+        v, w = map(int, input().split())
+        v = find(v)
+        w = find(w)
 ​
-    answer = sum(fee)
-    print(answer if answer <= k else "Oh no")
+        if money[v] < money[w]:
+            friend[w] = friend[v]
+            money[w] = 0
+        else:
+            friend[v] = friend[w]
+            money[v] = 0
+​
+    ans = sum(money)
+    print(ans if ans <= K else "Oh no")
     return
 ​
 solution()
