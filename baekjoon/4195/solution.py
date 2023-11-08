@@ -3,47 +3,29 @@
 import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
+from collections import defaultdict
 ​
 ​
-def solution():
-    t = int(input())
+def find(node):
+    if not uf[node]:
+        return node
+    uf[node] = find(uf[node])
+    return uf[node]
 ​
-    def find(x):
-        if uf[x] < 0:
-            return x
-        uf[x] = find(uf[x])
-        return uf[x]
 ​
-    def union(a, b):
-        a = find(a)
-        b = find(b)
-        if a == b:
-            return
+T = int(input())
+for _ in range(T):
+    F = int(input())
+    uf = defaultdict(str)
+    friend = defaultdict(list)
 ​
-        uf[b] = a
-        size[a] += size[b]
-        return
-​
-    for _ in range(t):
-        f = int(input())
-        idx = 0
-        friends = {}
-        uf = [-1] * 200000
-        size = [1] * 200000
-​
-        for _ in range(f):
-            f1, f2 = input().rstrip().split()
-            if f1 not in friends:
-                friends[f1] = idx
-                idx += 1
-            if f2 not in friends:
-                friends[f2] = idx
-                idx += 1
-​
-            union(friends[f1], friends[f2])
-            print(size[find(friends[f1])])
-​
-    return
-​
-solution()
+    for _ in range(F):
+        s1, s2 = input().split()
+        s1 = find(s1)
+        s2 = find(s2)
+        if s1 != s2:
+            friend[s1].append(s2)
+            friend[s1].extend(friend[s2])
+            uf[s2] = s1
+        print(len(friend[s1]) + 1)
 ​
