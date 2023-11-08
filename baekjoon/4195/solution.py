@@ -7,25 +7,42 @@ from collections import defaultdict
 ​
 ​
 def find(node):
-    if not uf[node]:
+    if uf[node] < 0:
         return node
     uf[node] = find(uf[node])
     return uf[node]
 ​
 ​
+def union(a, b):
+    a = find(a)
+    b = find(b)
+​
+    if a == b:
+        return
+​
+    uf[b] = a
+    size[a] += size[b]
+​
+    return
+​
+​
 T = int(input())
 for _ in range(T):
     F = int(input())
-    uf = defaultdict(str)
-    friend = defaultdict(list)
-​
+    uf = defaultdict(lambda: -1)
+    size = defaultdict(lambda: 1)
+    friends = {}
+    idx = 0
     for _ in range(F):
         s1, s2 = input().split()
-        s1 = find(s1)
-        s2 = find(s2)
-        if s1 != s2:
-            friend[s1].append(s2)
-            friend[s1].extend(friend[s2])
-            uf[s2] = s1
-        print(len(friend[s1]) + 1)
+        if s1 not in friends:
+            friends[s1] = idx
+            idx += 1
+        if s2 not in friends:
+            friends[s2] = idx
+            idx += 1
+​
+        union(friends[s1], friends[s2])
+        print(size[find(friends[s1])])
+        
 ​
