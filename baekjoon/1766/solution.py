@@ -6,33 +6,28 @@ input = sys.stdin.readline
 from collections import defaultdict
 import heapq
 ​
+N, M = map(int, input().split())
+indegree = [0] * (N + 1)
+p = defaultdict(list)
 ​
-def solution():
-    n, m = map(int, input().split())
-    indegree = [0] * (n + 1)
-    graph = defaultdict(list)
-    for _ in range(m):
-        a, b = map(int, input().split())
-        graph[a].append(b)
-        indegree[b] += 1
+for _ in range(M):
+    a, b = map(int, input().split())
+    indegree[b] += 1
+    p[a].append(b)
 ​
-    q = []
-    for i in range(1, n + 1):
-        if indegree[i] == 0:
-            heapq.heappush(q, i)
+q = []
+ans = []
+for i in range(1, N + 1):
+    if indegree[i] == 0:
+        heapq.heappush(q, i)
 ​
-    answer = []
-    while q:
-        cur = heapq.heappop(q)
-        answer.append(cur)
-        for node in graph[cur]:
-            indegree[node] -= 1
-            if indegree[node] == 0:
-                heapq.heappush(q, node)
+while q:
+    node = heapq.heappop(q)
+    ans.append(node)
+    for next_node in p[node]:
+        indegree[next_node] -= 1
+        if indegree[next_node] == 0:
+            heapq.heappush(q, next_node)
 ​
-    print(*answer)
-    return
-​
-​
-solution()
+print(*ans)
 ​
