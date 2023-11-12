@@ -4,30 +4,26 @@ import sys
 #sys.stdin = open('test.txt', 'r')
 input = sys.stdin.readline
 ​
+N = int(input())
+dic = {}
 ​
-def solution():
-    n = int(input())
-    dic = {0: {}}
+for _ in range(N):
+    s = input().split()[1:]
+    cur = dic
+    
+    for i in range(len(s)):
+        if s[i] not in cur:
+            cur[s[i]] = {}
+        cur = cur[s[i]]
 ​
-    for _ in range(n):
-        k, *info = input().split()
-        root = dic[0]
-        cur_dic = root
-        for char in info:
-            cur_dic = cur_dic.setdefault(char, {})
 ​
-    def travel(depth, cur):
-        children = sorted(cur)
-​
-        for child in children:
-            print(depth * '--' + child)
-            travel(depth + 1, cur[child])
-        return
-​
-    travel(0, dic[0])
+def dic_print(l, k, cur):
+    print('--' * l + k)
+    for next_k in sorted(cur.keys()):
+        dic_print(l + 1, next_k, cur[next_k])
     return
 ​
-solution()
 ​
-​
+for k in sorted(dic.keys()):
+    dic_print(0, k, dic[k])
 ​
