@@ -6,32 +6,28 @@ input = sys.stdin.readline
 from collections import defaultdict
 sys.setrecursionlimit(10 ** 8)
 ​
-def solution():
-    n = int(input())
-    people = [0] + list(map(int, input().split()))
-    dp = [[0, people[i]] for i in range(n + 1)]
 ​
-    graph = defaultdict(list)
-    for _ in range(n - 1):
-        a, b = map(int, input().split())
-        graph[a].append(b)
-        graph[b].append(a)
+N = int(input())
+tree = defaultdict(list)
+village = [0] + list(map(int, input().split()))
+for _ in range(N - 1):
+    a, b = map(int, input().split())
+    tree[a].append(b)
+    tree[b].append(a)
 ​
-    def dfs(cur):
-        checked[cur] = 1
-        for node in graph[cur]:
-            if not checked[node]:
-                dfs(node)
-                dp[cur][1] += dp[node][0]
-                dp[cur][0] += max(dp[node][0], dp[node][1])
 ​
-        return
-​
-    checked = [0] * (n + 1)
-    dfs(1)
-    print(max(dp[1]))
+def dfs(cur):
+    checked[cur] = 1
+    for node in tree[cur]:
+        if not checked[node]:
+            dfs(node)
+            dp[cur][1] += dp[node][0]
+            dp[cur][0] += max(dp[node])
     return
 ​
 ​
-solution()
+checked = [0] * (N + 1)
+dp = [[0, village[i]] for i in range(N + 1)]
+dfs(1)
+print(max(dp[1]))
 ​
