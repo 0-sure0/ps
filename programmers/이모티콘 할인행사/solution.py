@@ -5,26 +5,21 @@ from itertools import product
 
 def solution(users, emoticons):
     answer = [0, 0]
-    n = len(users)
-    m = len(emoticons)
+    sales = [10, 20, 30, 40]
+    for sale in product(sales, repeat=len(emoticons)):
+        join = 0
+        total_price = 0
 
-    sale_percent = product([40, 30, 20, 10], repeat=m)
+        for percent, price in users:
+            t = 0
+            for sale_rate, emoticon in zip(sale, emoticons):
+                if sale_rate >= percent:
+                    t += emoticon * (1 - (sale_rate / 100))
 
-    for sale in sale_percent:
-        cnt = sale_price = 0
-        for user in users:
-            tmp = 0
-            percent, limit = user
-            for j in range(m):
-                if sale[j] >= percent:
-                    tmp += int(emoticons[j] * ((100 - sale[j]) * 0.01))
-
-            if tmp >= limit:
-                cnt += 1
+            if t >= price:
+                join += 1
             else:
-                sale_price += tmp
+                total_price += t
 
-        if cnt > answer[0] or (cnt == answer[0] and sale_price > answer[1]):
-            answer = [cnt, sale_price]
-
+        answer = max(answer, [join, total_price])
     return answer
