@@ -1,3 +1,4 @@
+from math import ceil, log2
 
 def solution(numbers):
     def dfs(v: int, pow: int) -> int:
