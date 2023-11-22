@@ -1,5 +1,10 @@
 from math import ceil, log2
 
+#인덱스 시작을 1로 가정
+#자손 노드 접근 방법 -> 현재 인덱스를 x라 하자. a = x & (-x)
+#왼쪽 자손: x - a // 2   
+#오른쪽 자손: x + a // 2
+
 def solution(numbers):
     def dfs(v: int, pow: int) -> int:
         if pow == 1:
